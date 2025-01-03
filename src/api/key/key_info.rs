@@ -42,19 +42,19 @@ pub struct Usage {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CurrentMinute {
     pub requests_made: i64,
-    pub requests_left: i64,
+    pub requests_left: Option<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CurrentDay {
-    pub credits_used: i64,
+    pub credits_used: Option<i64>,
     pub credits_left: Option<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CurrentMonth {
-    pub credits_used: i64,
-    pub credits_left: i64,
+    pub credits_used: Option<i64>,
+    pub credits_left: Option<i64>,
 }
 
 impl Display for KeyInfo {
@@ -66,7 +66,7 @@ impl Display for KeyInfo {
             self.plan.credit_limit_monthly,
             self.plan.credit_limit_monthly_reset,
             self.plan.rate_limit_minute,
-            self.usage.current_month.credits_left
+            self.usage.current_month.credits_left.unwrap_or_default()
         )
     }
 }

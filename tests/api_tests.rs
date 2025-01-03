@@ -288,3 +288,12 @@ mod network_tests {
         assert_eq!(16, id);
     }
 }
+
+mod sandbox_tests {
+    #[test]
+    fn net_key_info() {
+        let cmc = cmc::Cmc::sandbox();
+        let key_info = cmc.key_info().unwrap();
+        assert!(key_info.plan.credit_limit_monthly > 0);
+    }
+}
