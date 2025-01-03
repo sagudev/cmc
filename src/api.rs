@@ -34,6 +34,8 @@ pub mod tools;
 use crate::api::tools::*;
 
 pub(crate) const CMC_API_URL: &str = "https://pro-api.coinmarketcap.com/";
+pub(crate) const CMC_SANDBOX_API_URL: &str = "https://sandbox-api.coinmarketcap.com/";
+pub(crate) const CMC_SANDBOX_API_KEY: &str = "b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c";
 pub type CmcResult<T> = Result<T, CmcErrors>;
 
 #[derive(Clone, Debug)]
@@ -195,6 +197,13 @@ impl Cmc {
     /// Constructs a new CoinMarketCap Client.
     pub fn new<T: Into<String>>(api_key: T) -> Self {
         CmcBuilder::new(api_key).build()
+    }
+
+    /// Constructs a new sandbox CoinMarketCap Client.
+    pub fn sandbox() -> Self {
+        CmcBuilder::new(CMC_SANDBOX_API_KEY)
+            .base_url(CMC_SANDBOX_API_URL)
+            .build()
     }
 
     fn add_endpoint(&self, endpoint: &str) -> RequestBuilder {

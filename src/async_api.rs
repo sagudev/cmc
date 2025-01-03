@@ -123,6 +123,13 @@ impl Cmc {
         CmcBuilder::new(api_key).build()
     }
 
+    /// Constructs a new sandbox CoinMarketCap async Client.
+    pub fn sandbox() -> Self {
+        CmcBuilder::new(crate::api::CMC_SANDBOX_API_KEY)
+            .base_url(crate::api::CMC_SANDBOX_API_URL)
+            .build()
+    }
+
     fn add_endpoint(&self, endpoint: &str) -> RequestBuilder {
         self.client
             .get(format!("{}{}", self.config.base_url, endpoint))
