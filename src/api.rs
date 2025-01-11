@@ -627,6 +627,7 @@ impl Cmc {
                 let price = root.data[0]
                     .quote
                     .get(&convert.to_uppercase())
+                    .or_else(|| root.data[0].quote.get(&convert.to_lowercase()))
                     .unwrap()
                     .price;
                 if let Some(price) = price {

@@ -1,11 +1,30 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
+use std::ops::Index;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PCv2Symbol {
     pub status: Status,
-    pub data: Vec<ConversionResult>,
+    pub data: SomeConversionResult,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SomeConversionResult {
+    Map(HashMap<String, ConversionResult>),
+    Array(Vec<ConversionResult>),
+}
+
+impl Index<usize> for SomeConversionResult {
+    type Output = ConversionResult;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        match self {
+            SomeConversionResult::Map(hash_map) => hash_map.iter().nth(index).unwrap().1,
+            SomeConversionResult::Array(vec) => vec.get(index).unwrap(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -26,7 +45,7 @@ pub struct Status {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ConversionResult {
-    pub id: i64,
+    pub id: Value,
     pub symbol: String,
     pub name: String,
     pub amount: f64,

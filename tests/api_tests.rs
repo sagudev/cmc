@@ -304,4 +304,11 @@ mod sandbox_tests {
         let cmc = Cmc::sandbox();
         assert!(cmc.price("BTC").unwrap() > 0.)
     }
+
+    #[test]
+    fn net_price_conversion() {
+        let cmc = Cmc::sandbox();
+        let price = cmc.price_conversion(2.5, "BTC", None, "usd").unwrap();
+        assert!(price > 0.1);
+    }
 }
