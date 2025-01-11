@@ -290,10 +290,18 @@ mod network_tests {
 }
 
 mod sandbox_tests {
+    use cmc::Cmc;
+
     #[test]
     fn net_key_info() {
-        let cmc = cmc::Cmc::sandbox();
+        let cmc = Cmc::sandbox();
         let key_info = cmc.key_info().unwrap();
         assert!(key_info.plan.credit_limit_monthly > 0);
+    }
+
+    #[test]
+    fn net_price() {
+        let cmc = Cmc::sandbox();
+        assert!(cmc.price("BTC").unwrap() > 0.)
     }
 }

@@ -45,19 +45,24 @@ pub struct CryptoCurrency {
     pub is_active: i64,
     pub platform: Value,
     pub cmc_rank: Value,
-    pub is_fiat: i64,
+    pub is_fiat: Option<i64>,
     pub self_reported_circulating_supply: Value,
     pub self_reported_market_cap: Value,
+    #[serde(default)]
     pub tvl_ratio: Value,
     pub last_updated: String,
     pub quote: HashMap<String, Currency>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Tag {
-    pub slug: String,
-    pub name: String,
-    pub category: String,
+#[serde(untagged)]
+pub enum Tag {
+    Simple(String),
+    Explicit {
+        slug: String,
+        name: String,
+        category: String,
+    },
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -69,11 +74,14 @@ pub struct Currency {
     pub percent_change_24h: Value,
     pub percent_change_7d: Value,
     pub percent_change_30d: Value,
+    #[serde(default)]
     pub percent_change_60d: Value,
+    #[serde(default)]
     pub percent_change_90d: Value,
     pub market_cap: Value,
     pub market_cap_dominance: Value,
     pub fully_diluted_market_cap: Value,
+    #[serde(default)]
     pub tvl: Value,
     pub last_updated: String,
 }
